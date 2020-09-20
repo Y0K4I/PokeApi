@@ -1,6 +1,6 @@
 # PokeApi
 
-!! Подключить MongoDB
+!! Подключить MongoDB в папке config/keys.js
 
 Обращение к API .../PokeApi/
 
