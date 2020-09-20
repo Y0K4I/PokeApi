@@ -6,7 +6,8 @@ const pokemon = new Schema ({
         type: Number
     },
     name: {
-        type: String
+        type: String,
+        text: true
     },
     types: {
         type: Array
@@ -30,5 +31,7 @@ const pokemon = new Schema ({
         type: Number
     }
 })
+
+pokemon.index({name: 'text'})
 
 module.exports = mongoose.model('pokemonStats', pokemon)

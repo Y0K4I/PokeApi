@@ -5,22 +5,41 @@ const Pokemon = require('../models/Pokemons')
 module.exports.sortBy = async function (req, res) {
     try {
         if (req.body) {
-            const allTypes = [{types: "fire"}]
-            const sorted = await Pokemon.find({$and: [
-                { $or: [ {$or: req.body.type}, {$or: allTypes} ] },
-                { $and: [ 
-                    { $or: [{ hp: {$lt: req.body.hpLess} }, { hp: {$gt: req.body.hpMore} }, { hp: {$gt: 0} } ]},
-                    { $or: [{ attack: {$lt: req.body.attackLess} }, { attack: {$gt: req.body.attackMore} }, { attack: {$gt: 0} } ]},
-                    { $or: [{ defense: {$lt: req.body.defenseLess} }, { defense: {$gt: req.body.defenseMore} }, { defense: {$gt: 0} } ]},
-                    { $or: [{ specialAttack: {$lt: req.body.specialAttackLess} }, { specialAttack: {$gt: req.body.specialAttackMore} }, { specialAttack: {$gt: 0} } ]},
-                    { $or: [{ specialDefense: {$lt: req.body.specialDefenseLess} }, { specialDefense: {$gt: req.body.specialDefenseMore} }, { specialDefense: {$gt: 0} } ]},
-                    { $or: [{ speed: {$lt: req.body.speedLess} }, { speed: {$gt: req.body.speedMore} }, { speed: {$gt: 0} } ]},
-                ]}
-            ]})
-            res.status(200).json(sorted)
+            console.log(req.body)
+            if(req.body.filterOption) {
+                const{hpLess, hpMore, attackLess, attackMore, defenseLess, defenseMore, specialAttackLess, specialAttackMore, 
+                    specialDefenseLess, specialDefenseMore, speedLess, speedMore, nameFind, type} = req.body.filterOption
+                console.log(hpLess);
+                if(Number(hpMore) && Number(hpMore) && Number(attackLess) && Number(attackMore) && Number(defenseLess) && Number(defenseMore)
+                    && Number(specialAttackLess) && Number(specialAttackMore) && Number(specialDefenseLess) && Number(specialDefenseMore)
+                    && Number(speedLess) && Number(speedMore) && String(nameFind)) {
+                    const sorted = await Pokemon.find({$and: [
+                        !!type ? { $or: [{$or: type}] } : {},
+                        { $and: [ 
+                            !!hpLess || !!hpMore ?  { $or: [{ hp: !!hpLess && {$lt: Math.round(hpLess)} }, { hp: !!hpMore && {$gt: Math.round(hpMore)} } ]} : {},
+                            !!attackLess || !!attackMore ?  { $or: [{ attack: !!attackLess && {$lt: Math.round(attackLess)} }, { attack: !!attackMore && {$gt: Math.round(attackMore)} } ]} : {},
+                            !!defenseLess || !!defenseMore ?  { $or: [{ defense: !!defenseLess && {$lt: Math.round(defenseLess)} }, { defense: !!defenseMore && {$gt: Math.round(defenseMore)} } ]} : {},
+                            !!specialAttackLess || !!specialAttackMore ?  { $or: [{ specialAttack: !!specialAttackLess && {$lt: Math.round(specialAttackLess)} }, { specialAttack: !!specialAttackMore && {$gt: Math.round(specialAttackMore)} } ]} : {},
+                            !!specialDefenseLess || !!specialDefenseMore ?  { $or: [{ specialDefense: !!specialDefenseLess && {$lt: Math.round(specialDefenseLess)} }, { hp: !!specialDefenseMore && {$gt: Math.round(specialDefenseMore)} } ]} : {},
+                            !!speedLess || !!speedMore ?  { $or: [{ speed: !!speedLess && {$lt: Math.round(speedLess)} }, { hp: !!speedMore && {$gt: Math.round(speedMore)} } ]} : {}
+                        ]},
+                        !!nameFind ? {name: {$regex: nameFind }} : {}
+                    ]})
+                    
+                    res.status(200).json(sorted)
+                } else {
+                    res.status(400).json({
+                        message: "Error! Wrong type of variables!"
+                    })
+                }
+            } else {
+                res.status(400).json({
+                    message: "Error! No Filter Options!"
+                })
+            }
         }
         
     } catch (e) {
-        errorHandler(res, e)
+        errorHandle
     }
 }

@@ -42,7 +42,7 @@ module.exports.getAllPokemonsData = async function(req, res) {
 
 module.exports.getPokemonsStats = async function(req, res) {
     try {
-        let i = 808
+        let i = 1
         const getCount = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=1&offset=0')
 
         for(i; i <= (getCount.data.count + 9107); i++) {
@@ -63,7 +63,8 @@ module.exports.getPokemonsStats = async function(req, res) {
                     specialAttack: 1,
                     specialDefense: 1,
                     speed: 1
-                }).save() 
+                }).save()
+                console.log(i + "NoName"); 
             } else {
                 const stats = new Pokemon({
                     name: result.data.name,
