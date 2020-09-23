@@ -93,7 +93,7 @@ module.exports.getPokemonsStats = async function(req, res) {
 module.exports.getPokemonStats = async function(req, res) {
     try {
         const stats = await Pokemon.findOne({id: req.params.id})
-        res.status(200).json(stats)
+        res.status(200).json(stats).limit(!!req.query.limit ? +req.query.limit : 20).skip(!!req.query.offset ? +req.query.offset : 0)
     } catch(e) {
         errorHandler(res, e)
     }
