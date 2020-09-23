@@ -1,4 +1,4 @@
-# PokeApi
+# PokeApi (За основу взято https://pokeapi.co/)
 
 !! Подключить MongoDB в папке config/keys.js
 
