@@ -34,7 +34,7 @@ module.exports.getAllPokemons = async function(req, res) {
 module.exports.getAllPokemonsData = async function(req, res) {
     try {
         const pokemons = await Card.find()
-        res.status(200).json(pokemons)
+        res.status(200).json(pokemons).limit(!!req.query.limit ? +req.query.limit : 20).skip(!!req.query.offset ? +req.query.offset : 0)
     } catch(e) {
         errorHandler(res, e)
     }

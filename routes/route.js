@@ -9,6 +9,6 @@ router.get('/getPokemonsData', controller.getAllPokemonsData)
 router.get('/getPokemonsStats', controller.getPokemonsStats)
 router.get('/getStatOf/:id', controller.getPokemonStats)
 
-router.get('/sortBy', filter.sortBy)
+router.get('/sort', filter.sortBy)
 
 module.exports = router
