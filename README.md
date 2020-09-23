@@ -16,14 +16,14 @@ attack, defense, specialAttack, specialDefense, speed);
 
 - Получение информации:
 
-.../getPokemonsData - 
+.../getPokemonsData?limit=20&offset=0 - 
 Получение краткоой информации о покемонах;
-.../getStatOf/id - 
+.../getStatOf/id?limit=20&offset=0 - 
 Получение полной информации о покемонах;
 
 - Сортировка:
 
-.../sortBy - Сортировка, принимает данные:
+.../sort?limit=20&offset=0 - Сортировка, принимает данные:
   type: [{ ... }] - сортировка по типу,
   name: String - сортировка по имени,
   (name of stat)Less: Number - сортировка по указанной статистике (меньше чем переданное число),
