@@ -2,7 +2,7 @@
 
 !! Подключить MongoDB в папке config/keys.js
 
-Обращение к API .../PokeApi/
+Обращение к API .../PokeApi/, 
 
 Роуты:
 
@@ -23,9 +23,11 @@ attack, defense, specialAttack, specialDefense, speed);
 
 - Сортировка:
 
-.../sort?limit=20&offset=0 - Сортировка, принимает данные:
-  type: [{ ... }] - сортировка по типу,
-  name: String - сортировка по имени,
-  (name of stat)Less: Number - сортировка по указанной статистике (меньше чем переданное число),
-  (name of stat)More: Number - сортировка по указанной статистике (больше чем переданное число)
+.../sort?limit=20&offset=0 - Сортировка, в body можно отправить (все фильтры отправлять в одном масиве):
+  typeFilter: {type: ["nameoftype"]}
+  statsFilter: {nameofstat: {from: number, to: number}}
+  nameFilter: {name: "nameofpokemon"}
+  
+  где нужно подставить свои nameoftype - искаемый тип или типы покемонов, nameofstat - искаемый промежуток статистик покемона(можно ввести только значение from или to,
+  nameofpokemon - поиск совпадений по имени.
   
