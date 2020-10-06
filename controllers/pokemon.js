@@ -33,8 +33,9 @@ module.exports.getAllPokemons = async function(req, res) {
 
 module.exports.getAllPokemonsData = async function(req, res) {
     try {
-        const pokemons = await Card.find()
-        res.status(200).json(pokemons).limit(!!req.query.limit ? +req.query.limit : 20).skip(!!req.query.offset ? +req.query.offset : 0)
+        const pokemons = await Card.find().limit(!!req.query.limit ? +req.query.limit : 20).skip(!!req.query.offset ? +req.query.offset : 0)
+        res.set('Access-Control-Allow-Origin', '*')
+        res.status(200).json(pokemons)
     } catch(e) {
         errorHandler(res, e)
     }
@@ -93,7 +94,8 @@ module.exports.getPokemonsStats = async function(req, res) {
 module.exports.getPokemonStats = async function(req, res) {
     try {
         const stats = await Pokemon.findOne({id: req.params.id})
-        res.status(200).json(stats).limit(!!req.query.limit ? +req.query.limit : 20).skip(!!req.query.offset ? +req.query.offset : 0)
+        res.set('Access-Control-Allow-Origin', '*')
+        res.status(200).json(stats)
     } catch(e) {
         errorHandler(res, e)
     }
