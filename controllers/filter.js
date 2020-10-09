@@ -47,8 +47,6 @@ module.exports.sortBy = async function (req, res) {
             }
           })
         }
-
-        console.log(statsObj);
              
         const sorted = await Pokemon.find({
           $and: [
@@ -64,8 +62,8 @@ module.exports.sortBy = async function (req, res) {
             !!filterOptions.nameFilter ? {name: {$regex: filterOptions.nameFilter }} : {}
           ]
         })
-        .limit(!!req.query.limit ? +req.query.limit : 10)
-        .skip(!!req.query.offset ? +req.query.offset : 0)
+        .limit(!!req.body.limit ? +req.body.limit : 10)
+        .skip(!!req.body.offset ? +req.body.offset : 0)
 
       if (sorted.length == 0) {
         res.status(400).json({
