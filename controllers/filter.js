@@ -7,7 +7,7 @@ module.exports.sortBy = async function (req, res) {
  
     if (req.body) {
       console.log(req);
-      const filter = req.body
+      const filter = req.body.filterOptions
       let filterOptions = {}
 
       filter.forEach((element) => {
