@@ -1,45 +1,6 @@
-const Card = require('../models/Cards')
 const Pokemon = require('../models/Pokemons')
 const errorHandler = require('../utils/errorHandler')
 const axios = require('axios')
-
-module.exports.getAllPokemons = async function(req, res) {
-    try {
-        const getCount = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=1&offset=0')
-        const result = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${getCount.data.count}&offset=0`)
-        const pokemons = result.data.results
-
-        let i = 1
-
-        pokemons.forEach(element => {
-            const pokemon = new Card({
-                id: i,
-                name: element.name
-            }).save()
-            i++
-            if (i === 894) {
-                i += 9107
-            }
-        })
-            
-        res.status(200).json({
-            message: "Pokemons copied"
-        })
-       
-    } catch(e) {
-        errorHandler(res, e)
-    }
-}
-
-module.exports.getAllPokemonsData = async function(req, res) {
-    try {
-        const pokemons = await Card.find().limit(!!req.query.limit ? +req.query.limit : 20).skip(!!req.query.offset ? +req.query.offset : 0)
-        res.set('Access-Control-Allow-Origin', '*')
-        res.status(200).json(pokemons)
-    } catch(e) {
-        errorHandler(res, e)
-    }
-}
 
 module.exports.getPokemonsStats = async function(req, res) {
     try {
@@ -93,11 +54,42 @@ module.exports.getPokemonsStats = async function(req, res) {
 
 module.exports.getPokemonStats = async function(req, res) {
     try {
-        const stats = await Pokemon.findOne({id: req.params.id})
         res.set('Access-Control-Allow-Origin', '*')
+        const stats = await Pokemon.findOne({id: req.params.id})
         res.status(200).json(stats)
     } catch(e) {
         errorHandler(res, e)
     }
 }
 
+module.exports.getPokemonsCount = async function(req, res) {
+    try {
+        res.set('Access-Control-Allow-Origin', '*')
+        const pokemons = await Pokemon.find()
+        const pokemonsCount = pokemons.length
+        res.status(200).json({
+            count: pokemonsCount
+        })
+    } catch(e) {
+        errorHandler(res, e)
+    }
+}
+
+module.exports.getPokemonsTypes = async function(req, res) {
+    try {
+        let typesArr = []
+        const pokemonsTypes = await axios.get('https://pokeapi.co/api/v2/type')
+        const apiArr = pokemonsTypes.data.results
+
+        apiArr.map(type => {
+            typesArr = [...typesArr, type.name]
+        })
+
+        res.status(200).json({
+            types: typesArr
+        })
+
+    } catch(e) {
+        errorHandler(res, e)
+    }
+}

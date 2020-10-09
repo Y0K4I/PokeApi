@@ -4,8 +4,9 @@ const Pokemon = require("../models/Pokemons");
 module.exports.sortBy = async function (req, res) {
   try {
     res.set('Access-Control-Allow-Origin', '*')
+ 
     if (req.body) {
-      
+      console.log(req);
       const filter = req.body
       let filterOptions = {}
 
@@ -47,7 +48,8 @@ module.exports.sortBy = async function (req, res) {
           })
         }
 
-        console.log(statsObj);        
+        console.log(statsObj);
+             
         const sorted = await Pokemon.find({
           $and: [
             !!typesArr.length > 0 ? {$or: typesArr} : {},
@@ -62,7 +64,7 @@ module.exports.sortBy = async function (req, res) {
             !!filterOptions.nameFilter ? {name: {$regex: filterOptions.nameFilter }} : {}
           ]
         })
-        .limit(!!req.query.limit ? +req.query.limit : 20)
+        .limit(!!req.query.limit ? +req.query.limit : 10)
         .skip(!!req.query.offset ? +req.query.offset : 0)
 
       if (sorted.length == 0) {
