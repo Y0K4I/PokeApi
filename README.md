@@ -23,8 +23,8 @@ attack, defense, specialAttack, specialDefense, speed);
 
 - Сортировка:
 
-.../sort?limit=20&offset=0 - Сортировка, в body можно отправить (все фильтры отправлять в одном масиве):
-  typeFilter: {type: ["nameoftype"]}
+.../sort - Сортировка, в body можно отправить (все фильтры отправлять в одном масиве):
+  typeFilter: ["nameoftype"]
   statsFilter: {nameofstat: {from: number, to: number}}
   nameFilter: {name: "nameofpokemon"}
   
