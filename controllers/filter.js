@@ -50,7 +50,7 @@ module.exports.sortBy = async function (req, res) {
           $and: [
             !!typesArr.length > 0 ? {$or: typesArr} : {},
             !!statsArr.length > 0 ? {$and: statsArr} : {},
-            !!filterOptions.nameFilter ? {name: {$regex: filterOptions.nameFilter }} : {}
+            !!filterOptions.nameFilter ? {name: {$regex: filterOptions.nameFilter, $options: 'i' }} : {}
           ]
         })
         .limit(!!req.body.limit ? +req.body.limit : 10)
