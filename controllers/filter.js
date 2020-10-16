@@ -6,7 +6,6 @@ module.exports.sortBy = async function (req, res) {
     res.set('Access-Control-Allow-Origin', '*')
 
     if (req.body) {
-      console.log(req);
       const filter = req.body.filterOptions
       let filterOptions = {}
 
@@ -24,22 +23,21 @@ module.exports.sortBy = async function (req, res) {
 
         if(typeFilter) {
           typeFilter.map(type => {
-            const typeObj = {types: type}
-            typesArr = [...typesArr, typeObj]
+            typesArr = [...typesArr, {types: type}]
           })
         }
+        
+        let statsArr = []
 
         if (statFilter) {
           statFilter.forEach((stat) => {
             let statName = Object.keys(stat)[0];
             if (Number({...stat[statName]}.from) && Number({...stat[statName]}.to)) {
-              statsObj[statName] = statName
-              statsObj[statName+"From"] = Number(Math.round({...stat[statName]}.from))
-              statsObj[statName+"To"] = Number(Math.round({...stat[statName]}.to))
-            } else if (!{...stat[statName]}.from) {
-              statsObj[statName+"From"] = 0
-            } else if (!{...stat[statName]}.to) {
-              statsObj[statName+"To"] = 9999
+              statsArr = [...statsArr, { $and: [{ [statName]: {$gte: {...stat[statName]}.from}}, {[statName]: {$lte: {...stat[statName]}.to}}]  } ]
+            } else if(Number({...stat[statName]}.from) && !{...stat[statName]}.to) {
+              statsArr = [...statsArr, { $and: [{ [statName]: {$gte: {...stat[statName]}.from}}, {[statName]: {$lte: 9999999}}]  } ]
+            } else if(!{...stat[statName]}.from && Number({...stat[statName]}.to)) {
+              statsArr = [...statsArr, { $and: [{ [statName]: {$gte: 0}}, {[statName]: {$lte: {...stat[statName]}.to}}]  } ]
             } else {
               res.status(400).json({
                 message: "Wrong type of " + statName
@@ -47,18 +45,11 @@ module.exports.sortBy = async function (req, res) {
             }
           })
         }
-             
+        console.log(statsArr);
         const sorted = await Pokemon.find({
           $and: [
             !!typesArr.length > 0 ? {$or: typesArr} : {},
-            !!statsObj ? {$and: [
-              !!statsObj.hp ? {$and: [{hp: {$gte: statsObj.hpFrom}}, {hp: {$lte: statsObj.hpTo}} ]} : {},
-              !!statsObj.attack ? {$and: [{attack: {$gte: statsObj.attackFrom}}, {attack: {$lte: statsObj.attackTo}} ]} : {},
-              !!statsObj.defense ? {$and: [{defense: {$gte: statsObj.defenseFrom}}, {defense: {$lte: statsObj.defenseTo}} ]} : {},
-              !!statsObj.specialAttack ? {$and: [{specialAttack: {$gte: statsObj.specialAttackFrom}}, {specialAttack: {$lte: statsObj.specialAttackTo}} ]} : {},
-              !!statsObj.specialDefense ? {$and: [{specialDefense: {$gte: statsObj.specialDefenseFrom}}, {specialDefense: {$lte: statsObj.specialDefenseTo}} ]} : {},
-              !!statsObj.speed ? {$and: [{speed: {$gte: statsObj.speedFrom}}, {speed: {$lte: statsObj.speedTo}} ]} : {},
-            ]} : {},
+            !!statsObj ? {$and: statsArr} : {},
             !!filterOptions.nameFilter ? {name: {$regex: filterOptions.nameFilter }} : {}
           ]
         })
