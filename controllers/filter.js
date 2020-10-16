@@ -29,7 +29,7 @@ module.exports.sortBy = async function (req, res) {
         
         let statsArr = []
 
-        if (statFilter) {
+        if (statFilter.length > 0) {
           statFilter.forEach((stat) => {
             let statName = Object.keys(stat)[0];
             if (Number({...stat[statName]}.from) && Number({...stat[statName]}.to)) {
