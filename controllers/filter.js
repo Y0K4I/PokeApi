@@ -29,7 +29,7 @@ module.exports.sortBy = async function (req, res) {
         
         let statsArr = []
 
-        if (statFilter.length > 0) {
+        if (statFilter) {
           statFilter.forEach((stat) => {
             let statName = Object.keys(stat)[0];
             if (Number({...stat[statName]}.from) && Number({...stat[statName]}.to)) {
@@ -49,7 +49,7 @@ module.exports.sortBy = async function (req, res) {
         const sorted = await Pokemon.find({
           $and: [
             !!typesArr.length > 0 ? {$or: typesArr} : {},
-            !!statsObj ? {$and: statsArr} : {},
+            !!statsArr.length > 0 ? {$and: statsArr} : {},
             !!filterOptions.nameFilter ? {name: {$regex: filterOptions.nameFilter }} : {}
           ]
         })
