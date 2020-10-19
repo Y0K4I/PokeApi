@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const request = require('request');
 
 const controller = require('../controllers/pokemon')
 const filter = require('../controllers/filter')
