@@ -2,8 +2,8 @@ const errorHandler = require("../utils/errorHandler");
 const Pokemon = require("../models/Pokemons");
 
 module.exports.sortBy = async function (req, res) {
-  res.header('Access-Control-Allow-Origin', '*')
   try {
+    res.set('Access-Control-Allow-Origin', '*')
     if (req.body) {
       const filter = req.body.filterOptions
       let filterOptions = {}

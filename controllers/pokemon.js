@@ -77,6 +77,7 @@ module.exports.getPokemonsCount = async function(req, res) {
 
 module.exports.getPokemonsTypes = async function(req, res) {
     try {
+        res.set('Access-Control-Allow-Origin', '*')
         let typesArr = []
         const pokemonsTypes = await axios.get('https://pokeapi.co/api/v2/type')
         const apiArr = pokemonsTypes.data.results
