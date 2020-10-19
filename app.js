@@ -19,9 +19,4 @@ app.use(bodyParser.json())
 
 app.use('/PokeApi', route)
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    next()
-})
-
 module.exports = app
