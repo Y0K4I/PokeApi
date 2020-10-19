@@ -54,7 +54,6 @@ module.exports.getPokemonsStats = async function(req, res) {
 
 module.exports.getPokemonStats = async function(req, res) {
     try {
-        res.set('Access-Control-Allow-Origin', '*')
         const stats = await Pokemon.findOne({id: req.params.id})
         res.status(200).json(stats)
     } catch(e) {
@@ -64,7 +63,6 @@ module.exports.getPokemonStats = async function(req, res) {
 
 module.exports.getPokemonsCount = async function(req, res) {
     try {
-        res.set('Access-Control-Allow-Origin', '*')
         const pokemons = await Pokemon.find()
         const pokemonsCount = pokemons.length
         res.status(200).json({
@@ -77,7 +75,6 @@ module.exports.getPokemonsCount = async function(req, res) {
 
 module.exports.getPokemonsTypes = async function(req, res) {
     try {
-        res.set('Access-Control-Allow-Origin', '*')
         let typesArr = []
         const pokemonsTypes = await axios.get('https://pokeapi.co/api/v2/type')
         const apiArr = pokemonsTypes.data.results

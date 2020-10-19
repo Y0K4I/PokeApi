@@ -3,11 +3,6 @@ const Pokemon = require("../models/Pokemons");
 
 module.exports.sortBy = async function (req, res) {
   try {
-    res.set('Access-Control-Allow-Credentials', "false")
-    res.set('Access-Control-Allow-Origin', '*')
-    res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,Server,Connection,X-Powered-By,Access-Control-Allow-Origin,Access-Control-Allow-Methods, Access-Control-Allow-Headers,Content-Type,Content-Length,Etag,Date,Via")
-    res.set('Access-Control-Expose-Headers', 'Server, Connection, X-Powered-By, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Content-Type, Content-Length, Etag, Date, Via')
     if (req.body) {
       const filter = req.body.filterOptions
       let filterOptions = {}
