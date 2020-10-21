@@ -4,6 +4,7 @@ const Pokemon = require("../models/Pokemons");
 module.exports.sortBy = async function (req, res) {
   try {
     if (req.body) {
+      console.log(res);
       const filter = req.body.filterOptions
       let filterOptions = {}
 
@@ -54,13 +55,21 @@ module.exports.sortBy = async function (req, res) {
         .limit(!!req.body.limit ? +req.body.limit : 10)
         .skip(!!req.body.offset ? +req.body.offset : 0)
 
+        const count = await Pokemon.find({
+          $and: [
+            !!typesArr.length > 0 ? {$or: typesArr} : {},
+            !!statsArr.length > 0 ? {$and: statsArr} : {},
+            !!filterOptions.nameFilter ? {name: {$regex: filterOptions.nameFilter, $options: 'i' }} : {}
+          ]
+        })
+
       if (sorted.length == 0) {
         res.status(400).json({
           message: "Wrong inputs!"
         })
       }
       else {
-        res.status(200).json(sorted)
+        res.status(200).json({count: count.length, pokemons: sorted})
       }
     }
   } catch (e) {
