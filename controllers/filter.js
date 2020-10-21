@@ -4,7 +4,6 @@ const Pokemon = require("../models/Pokemons");
 module.exports.sortBy = async function (req, res) {
   try {
     if (req.body) {
-      console.log(res);
       const filter = req.body.filterOptions
       let filterOptions = {}
 
@@ -44,7 +43,7 @@ module.exports.sortBy = async function (req, res) {
             }
           })
         }
-        console.log(statsArr);
+        
         const sorted = await Pokemon.find({
           $and: [
             !!typesArr.length > 0 ? {$or: typesArr} : {},
@@ -65,7 +64,7 @@ module.exports.sortBy = async function (req, res) {
 
       if (sorted.length == 0) {
         res.status(400).json({
-          message: "Wrong inputs!"
+          message: "This pokemons does not exist!"
         })
       }
       else {
